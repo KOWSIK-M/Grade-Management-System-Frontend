@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
@@ -17,7 +16,7 @@ export default function EmailVerificationPage() {
       .then((msg) => {
         toast.success(msg);
         setStatus("Verified! Redirecting...");
-        setTimeout(() => navigate("/dashbord"), 2000);
+        setTimeout(() => navigate("/signin", { replace: true }), 2000);
       })
       .catch(() => {
         toast.error("Invalid or expired link");
@@ -25,5 +24,7 @@ export default function EmailVerificationPage() {
       });
   }, []);
 
-  return <div className="text-center mt-32">{status}</div>;
+  return (
+    <div className="text-center mt-32 text-xl font-semibold">{status}</div>
+  );
 }

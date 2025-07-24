@@ -5,7 +5,7 @@ import { FiX, FiArrowRight } from "react-icons/fi";
 import { FaGoogle, FaGithub, FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import GoogleOAuthButton from "./GoogleOAuthButton";
 import GitHubOAuthButton from "./GithubOAuthButton";
 
@@ -32,7 +32,7 @@ const SignIn = ({ onClose, onSignUpClick }) => {
       });
       if (!res.ok) throw new Error(await res.text());
       toast.success("Signed in!");
-      navigate("/addq");
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       toast.error(err.message);
     }
@@ -141,12 +141,12 @@ const SignIn = ({ onClose, onSignUpClick }) => {
                     </label>
                   </div>
 
-                  <a
-                    href="#"
+                  <Link
+                    to="/forgotpwd"
                     className="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
 
                 <div className="recaptcha-container flex justify-center">
