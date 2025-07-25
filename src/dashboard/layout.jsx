@@ -9,6 +9,7 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
+  FiFileText,
 } from "react-icons/fi";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { RiDashboardFill } from "react-icons/ri";
@@ -23,7 +24,7 @@ const Layout = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/auth/logout", {
+      await fetch("http://localhost:2025/api/auth/logout", {
         method: "POST",
         credentials: "include", // ✅ Very important to send cookies
       });
@@ -166,6 +167,44 @@ const Layout = ({ children }) => {
               ></span>
             </motion.button>
 
+            {/* My Questions Button */}
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate("/myq")}
+              className={`w-full flex items-center ${
+                sidebarCollapsed ? "justify-center px-0 py-4" : "px-4 py-3"
+              } rounded-lg transition-all relative overflow-hidden group ${
+                location.pathname.includes("myq")
+                  ? darkMode
+                    ? "bg-indigo-600 text-white"
+                    : "bg-indigo-500 text-white"
+                  : darkMode
+                  ? "text-gray-300 hover:bg-gray-700"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <FiFileText
+                className={`${sidebarCollapsed ? "text-xl" : "mr-3"}`}
+              />
+              {!sidebarCollapsed && (
+                <motion.span
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  My Questions
+                </motion.span>
+              )}
+              <span
+                className={`absolute left-0 bottom-0 h-1 bg-gradient-to-r from-purple-400 to-indigo-500 transition-all duration-300 ${
+                  location.pathname.includes("myq")
+                    ? "w-full"
+                    : "w-0 group-hover:w-full"
+                }`}
+              ></span>
+            </motion.button>
+
             {/* View Questions Button */}
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -190,7 +229,7 @@ const Layout = ({ children }) => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  View Questions
+                  View All Questions
                 </motion.span>
               )}
               <span
@@ -266,6 +305,7 @@ const Layout = ({ children }) => {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
                 {location.pathname.includes("dashboard") && "Dashboard"}
                 {location.pathname.includes("addq") && "Add Question"}
+                {location.pathname.includes("myq") && "My Questions"}
                 {location.pathname.includes("allq") && "All Questions"}
               </h1>
             </div>

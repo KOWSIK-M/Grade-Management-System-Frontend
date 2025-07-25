@@ -22,6 +22,7 @@ import axios from "axios";
 const DashboardStats = () => {
   const [questionCount, setQuestionCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
+  const [subjectCount, setSubjectCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,8 +34,12 @@ const DashboardStats = () => {
         const res2 = await axios.get(
           "http://localhost:2025/api/questions/questions-count"
         );
+        const res3 = await axios.get(
+          "http://localhost:2025/api/subjects/subjects-count"
+        );
         setUserCount(res1.data.userCount || 0);
         setQuestionCount(res2.data.questionCount || 0);
+        setSubjectCount(res3.data.subjectCount || 0);
       } catch (err) {
         console.error("Error fetching stats:", err);
       } finally {
@@ -52,17 +57,17 @@ const DashboardStats = () => {
       icon: <FaQuestionCircle className="text-2xl" />,
     },
     {
+      title: "Total Subjects",
+      value: subjectCount,
+      isPercent: true,
+      change: "+3%",
+      icon: <FaChartLine className="text-2xl" />,
+    },
+    {
       title: "Active Users",
       value: userCount,
       change: "+5%",
       icon: <FiUser className="text-2xl" />,
-    },
-    {
-      title: "Avg. Score",
-      value: 78,
-      isPercent: true,
-      change: "+3%",
-      icon: <FaChartLine className="text-2xl" />,
     },
   ];
 
@@ -86,7 +91,7 @@ const DashboardStats = () => {
                   <CountUp
                     end={stat.value}
                     duration={1.5}
-                    suffix={stat.isPercent ? "%" : ""}
+                    suffix={stat.isPercent ? "" : ""}
                   />
                 )}
               </p>
@@ -107,32 +112,25 @@ const DashboardStats = () => {
 
 // Recent Questions Component
 const RecentQuestions = () => {
-  const questions = [
-    {
-      id: 1,
-      title: "Array Manipulation",
-      difficulty: "Medium",
-      date: "2 hours ago",
-    },
-    {
-      id: 2,
-      title: "Binary Tree Traversal",
-      difficulty: "Hard",
-      date: "5 hours ago",
-    },
-    {
-      id: 3,
-      title: "String Palindrome",
-      difficulty: "Easy",
-      date: "1 day ago",
-    },
-    {
-      id: 4,
-      title: "Graph Algorithms",
-      difficulty: "Hard",
-      date: "2 days ago",
-    },
-  ];
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLatestQuestions = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:2025/api/questions/latest"
+        );
+        setQuestions(response.data);
+      } catch (error) {
+        console.error("Failed to fetch recent questions:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestQuestions();
+  }, []);
 
   return (
     <motion.div
@@ -147,37 +145,49 @@ const RecentQuestions = () => {
         </h3>
       </div>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        {questions.map((question, index) => (
-          <motion.div
-            key={question.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 * index }}
-            whileHover={{ x: 5 }}
-            className="p-4 hover:bg-gray-100 dark:hover:bg-gray-700/50 cursor-pointer flex items-center"
-          >
-            <div className="flex-1">
-              <h4 className="font-medium dark:text-white">{question.title}</h4>
-              <div className="flex items-center mt-1">
-                <span
-                  className={`text-xs px-2 py-1 rounded-full mr-2 ${
-                    question.difficulty === "Easy"
-                      ? "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200"
-                      : question.difficulty === "Medium"
-                      ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200"
-                      : "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200"
-                  }`}
-                >
-                  {question.difficulty}
-                </span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {question.date}
-                </span>
+        {loading ? (
+          <p className="p-4 text-gray-500 dark:text-gray-400">Loading...</p>
+        ) : questions.length === 0 ? (
+          <p className="p-4 text-gray-500 dark:text-gray-400">
+            No recent questions found.
+          </p>
+        ) : (
+          questions.map((question, index) => (
+            <motion.div
+              key={question.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * index }}
+              whileHover={{ x: 5 }}
+              className="p-4 hover:bg-gray-100 dark:hover:bg-gray-700/50 cursor-pointer flex items-center"
+            >
+              <div className="flex-1">
+                <h4 className="font-medium dark:text-white">
+                  {question.title}
+                </h4>
+                <div className="flex items-center mt-1">
+                  <span
+                    className={`text-xs px-2 py-1 rounded-full mr-2 ${
+                      question.difficulty === "Easy"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200"
+                        : question.difficulty === "Medium"
+                        ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200"
+                        : "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200"
+                    }`}
+                  >
+                    {question.difficulty}
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {question.createdAt
+                      ? new Date(question.createdAt).toLocaleString()
+                      : ""}
+                  </span>
+                </div>
               </div>
-            </div>
-            <FiChevronRight className="text-gray-400" />
-          </motion.div>
-        ))}
+              <FiChevronRight className="text-gray-400" />
+            </motion.div>
+          ))
+        )}
       </div>
     </motion.div>
   );

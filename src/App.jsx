@@ -13,6 +13,7 @@ import Dashboard from "./dashboard/Dashboard";
 import AddQuestion from "./dashboard/AddQuestion";
 import AllQuestions from "./dashboard/AllQuestions";
 import Profile from "./dashboard/Profile";
+import MyQuestions from "./dashboard/MyQuestions";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/verify-email" element={<EmailVerificationPage />} />
       <Route path="/addq" element={<AddQuestion />} />
       <Route path="/allq" element={<AllQuestions />} />
+      <Route path="/myq" element={<MyQuestions />} />
       <Route path="/forgotpwd" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/dashboard" element={<Dashboard />} />

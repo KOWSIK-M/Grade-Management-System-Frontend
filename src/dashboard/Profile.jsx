@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import {
-  FiUser,
-  FiMail,
-  FiLock,
-  FiEdit,
-  FiChevronRight,
-  FiUpload,
-} from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiEdit, FiChevronRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import debounce from "lodash.debounce";
@@ -29,7 +22,7 @@ const Profile = () => {
         const data = await res.json();
 
         // Set default avatar if none
-        if (!data.profileImageUrl?.trim() && data.authProvider === "MANUAL") {
+        if (data.authProvider === "MANUAL" && !data.profileImageUrl?.trim()) {
           data.profileImageUrl = `https://api.dicebear.com/6.x/initials/svg?seed=${encodeURIComponent(
             data.name || "User"
           )}`;
@@ -75,31 +68,6 @@ const Profile = () => {
     toast.success("Profile saved");
   };
 
-  // Handle profile image upload
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-      const res = await fetch("http://localhost:2025/api/profile/upload", {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
-
-      if (!res.ok) throw new Error("Upload failed");
-
-      const imageUrl = URL.createObjectURL(file);
-      setUserData((prev) => ({ ...prev, profileImageUrl: imageUrl }));
-      toast.success("Profile image updated");
-    } catch (err) {
-      toast.error("Failed to upload image");
-    }
-  };
-
   // Show loading while userData is null
   if (!userData) {
     return (
@@ -125,21 +93,14 @@ const Profile = () => {
                 <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
                   <div className="relative h-24 w-24 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden shadow-lg">
                     <img
-                      src={userData.profileImageUrl}
+                      src={
+                        userData.profileImageUrl?.trim()
+                          ? userData.profileImageUrl
+                          : `http://localhost:2025/api/auth/profile/image?t=${Date.now()}`
+                      }
                       alt="User"
                       className="h-full w-full object-cover"
                     />
-                    {isEditing && (
-                      <label className="absolute bottom-0 right-0 bg-indigo-600 p-1 rounded-full cursor-pointer">
-                        <FiUpload className="text-white text-sm" />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                          className="hidden"
-                        />
-                      </label>
-                    )}
                   </div>
                 </div>
               </div>
@@ -216,7 +177,7 @@ const Profile = () => {
                   </label>
                   <div className="md:col-span-2">
                     <button
-                      onClick={() => navigate("/forgot-password")}
+                      onClick={() => navigate("/forgotpwd")}
                       className="w-full text-left flex justify-between items-center p-4 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                     >
                       <div className="flex items-center">
