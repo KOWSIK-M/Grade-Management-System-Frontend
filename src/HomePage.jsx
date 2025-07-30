@@ -14,8 +14,9 @@ import {
 import { FaGoogle, FaChalkboardTeacher } from "react-icons/fa";
 import { PiGraduationCapFill } from "react-icons/pi";
 import SignIn from "./auth/SignIn";
-import SignUp from "./auth/SignUp"; // Add this import
-import backgroundImage from "./6img.webp";
+import SignUp from "./auth/SignUp";
+import backgroundImage from "./images/6img.webp";
+import lightBackgroundImage from "./images/light2.png";
 
 // Custom hook for dark mode with default as dark
 const useDarkMode = () => {
@@ -37,7 +38,7 @@ const useDarkMode = () => {
   return [darkMode, toggleDarkMode];
 };
 
-// Particle Background Component (keep this the same)
+// Particle Background Component
 const ParticleBackground = ({ darkMode }) => {
   const particles = Array.from({ length: 30 }).map((_, i) => ({
     id: i,
@@ -49,12 +50,12 @@ const ParticleBackground = ({ darkMode }) => {
   }));
 
   return (
-    <div className="fixed inset-0 overflow-hidden -z-10">
+    <div className="absolute inset-0 overflow-hidden z-0">
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
           className={`absolute rounded-full ${
-            darkMode ? "bg-indigo-400/20" : "bg-indigo-600/10"
+            darkMode ? "bg-indigo-400/20" : "bg-indigo-500/20"
           }`}
           style={{
             width: `${particle.size}px`,
@@ -89,7 +90,7 @@ const ParticleBackground = ({ darkMode }) => {
   );
 };
 
-// Solution Evaluation Component (keep this the same)
+// Solution Evaluation Component
 const SolutionEvaluator = ({ darkMode }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [subject, setSubject] = useState("CS101 - Algorithms");
@@ -188,8 +189,8 @@ const SolutionEvaluator = ({ darkMode }) => {
   return (
     <motion.div
       className={`w-full h-full p-6 rounded-2xl ${
-        darkMode ? "bg-gray-800/70 border-gray-700" : "bg-white border-gray-200"
-      } shadow-xl border backdrop-blur-sm`}
+        darkMode ? "bg-gray-800/70 border-gray-700" : "bg-white shadow-lg"
+      } backdrop-blur-sm transition-all duration-300`}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: 0.4 }}
@@ -197,7 +198,7 @@ const SolutionEvaluator = ({ darkMode }) => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2
           className={`text-xl font-bold ${
-            darkMode ? "text-white" : "text-gray-800"
+            darkMode ? "text-white" : "text-gray-900"
           }`}
         >
           {subject}
@@ -209,19 +210,23 @@ const SolutionEvaluator = ({ darkMode }) => {
             onChange={(e) => setNewMethod(e.target.value)}
             placeholder="Add solution method"
             className={`px-3 py-2 rounded-lg text-sm ${
-              darkMode ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-800"
-            } border ${darkMode ? "border-gray-600" : "border-gray-300"}`}
+              darkMode ? "bg-gray-700 text-white" : "bg-white text-gray-900"
+            } border ${
+              darkMode ? "border-gray-600" : "border-gray-300"
+            } focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500 outline-none transition shadow-sm`}
           />
-          <button
+          <motion.button
             onClick={addSolutionMethod}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             className={`px-3 py-2 rounded-lg ${
               darkMode
                 ? "bg-indigo-600 hover:bg-indigo-700"
-                : "bg-indigo-500 hover:bg-indigo-600"
-            } text-white text-sm`}
+                : "bg-indigo-600 hover:bg-indigo-700"
+            } text-white text-sm font-medium transition-all shadow-md`}
           >
             Add
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -229,21 +234,23 @@ const SolutionEvaluator = ({ darkMode }) => {
         <>
           <div className="flex overflow-x-auto pb-2 mb-6 gap-1">
             {solutions.map((solution, index) => (
-              <button
+              <motion.button
                 key={solution.id}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                   activeTab === index
                     ? darkMode
-                      ? "bg-indigo-600 text-white"
-                      : "bg-indigo-100 text-indigo-700"
+                      ? "bg-indigo-600 text-white shadow-md"
+                      : "bg-indigo-600 text-white shadow-md"
                     : darkMode
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                    : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
                 }`}
                 onClick={() => setActiveTab(index)}
               >
                 {solution.method}
-              </button>
+              </motion.button>
             ))}
           </div>
 
@@ -261,7 +268,7 @@ const SolutionEvaluator = ({ darkMode }) => {
                   <div className="space-y-4">
                     <h3
                       className={`text-lg font-semibold ${
-                        darkMode ? "text-gray-300" : "text-gray-700"
+                        darkMode ? "text-gray-300" : "text-gray-900"
                       }`}
                     >
                       Evaluation Criteria for {solutions[activeTab].method}
@@ -278,7 +285,7 @@ const SolutionEvaluator = ({ darkMode }) => {
                         <div className="flex justify-between items-center">
                           <span
                             className={`text-sm font-medium ${
-                              darkMode ? "text-gray-300" : "text-gray-700"
+                              darkMode ? "text-gray-300" : "text-gray-900"
                             }`}
                           >
                             {mark.criteria}
@@ -301,15 +308,15 @@ const SolutionEvaluator = ({ darkMode }) => {
                             className={`w-16 px-2 py-1 rounded ${
                               darkMode
                                 ? "bg-gray-700 text-white"
-                                : "bg-gray-100 text-gray-800"
+                                : "bg-white text-gray-900"
                             } border ${
                               darkMode ? "border-gray-600" : "border-gray-300"
-                            } text-right`}
+                            } text-right focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500 outline-none transition shadow-sm`}
                           />
                         </div>
                         <motion.div
                           className={`w-full h-2 rounded-full ${
-                            darkMode ? "bg-gray-700" : "bg-gray-200"
+                            darkMode ? "bg-gray-700" : "bg-indigo-100"
                           } overflow-hidden`}
                           initial={{
                             scaleX: 0,
@@ -335,11 +342,11 @@ const SolutionEvaluator = ({ darkMode }) => {
                                 mark.score / mark.max > 0.89
                                   ? darkMode
                                     ? "#4F46E5"
-                                    : "#6366F1"
+                                    : "#4F46E5"
                                   : mark.score / mark.max > 0.69
                                   ? darkMode
                                     ? "#7C3AED"
-                                    : "#8B5CF6"
+                                    : "#7C3AED"
                                   : darkMode
                                   ? "#A78BFA"
                                   : "#A78BFA",
@@ -350,16 +357,19 @@ const SolutionEvaluator = ({ darkMode }) => {
                     ))}
                   </div>
 
-                  <div
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
                     className={`flex justify-between items-center p-3 rounded-lg ${
                       darkMode
                         ? "bg-gradient-to-r from-indigo-500/10 to-violet-500/10"
-                        : "bg-gradient-to-r from-indigo-100 to-violet-100"
-                    }`}
+                        : "bg-gradient-to-r from-indigo-50 to-violet-50"
+                    } shadow-sm`}
                   >
                     <span
                       className={`font-medium ${
-                        darkMode ? "text-gray-300" : "text-gray-700"
+                        darkMode ? "text-gray-300" : "text-gray-900"
                       }`}
                     >
                       Total Score:
@@ -372,12 +382,16 @@ const SolutionEvaluator = ({ darkMode }) => {
                       {calculateTotal(solutions[activeTab].marks)} /{" "}
                       {calculateMaxTotal(solutions[activeTab].marks)}
                     </span>
-                  </div>
+                  </motion.div>
 
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
                     <h4
                       className={`text-sm font-medium mb-2 ${
-                        darkMode ? "text-gray-300" : "text-gray-700"
+                        darkMode ? "text-gray-300" : "text-gray-900"
                       }`}
                     >
                       Feedback
@@ -390,14 +404,14 @@ const SolutionEvaluator = ({ darkMode }) => {
                       className={`w-full p-3 rounded-lg ${
                         darkMode
                           ? "bg-gray-700 text-white"
-                          : "bg-gray-100 text-gray-800"
+                          : "bg-white text-gray-900"
                       } border ${
                         darkMode ? "border-gray-600" : "border-gray-300"
-                      }`}
+                      } focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500 outline-none transition shadow-sm`}
                       rows="3"
                       placeholder="Enter detailed feedback for this solution..."
                     />
-                  </div>
+                  </motion.div>
                 </div>
               )}
             </motion.div>
@@ -405,24 +419,28 @@ const SolutionEvaluator = ({ darkMode }) => {
 
           <motion.button
             onClick={saveEvaluations}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             className={`mt-6 w-full py-3 rounded-lg flex items-center justify-center gap-2 ${
               darkMode
                 ? "bg-indigo-600 hover:bg-indigo-700"
-                : "bg-indigo-500 hover:bg-indigo-600"
-            } text-white font-medium`}
+                : "bg-indigo-600 hover:bg-indigo-700"
+            } text-white font-medium transition-all shadow-lg`}
           >
             <FiSave /> Save Evaluations
           </motion.button>
         </>
       ) : (
-        <div className="h-64 flex items-center justify-center">
-          <p className={`${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="h-64 flex items-center justify-center"
+        >
+          <p className={`${darkMode ? "text-gray-400" : "text-gray-900"}`}>
             No solution methods added yet. Add your first solution method to
             begin evaluation.
           </p>
-        </div>
+        </motion.div>
       )}
     </motion.div>
   );
@@ -433,7 +451,7 @@ const HomePage = () => {
   const [activeFeature, setActiveFeature] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false); // Add this state
+  const [showSignUp, setShowSignUp] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -496,7 +514,13 @@ const HomePage = () => {
       <ParticleBackground darkMode={darkMode} />
 
       {/* Navigation */}
-      <nav className="w-full px-4 sm:px-6 lg:px-12 py-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 relative">
+      <nav
+        className={`w-full px-4 sm:px-6 lg:px-12 py-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 relative ${
+          darkMode ? "bg-gray-900" : "bg-white"
+        } border-b ${
+          darkMode ? "border-gray-800" : "border-gray-200"
+        } shadow-sm`}
+      >
         <motion.div
           className="flex items-center space-x-2"
           initial={{ opacity: 0, x: -20 }}
@@ -520,7 +544,7 @@ const HomePage = () => {
             className={`p-2 rounded-full transition-all ${
               darkMode
                 ? "bg-gray-700 text-amber-300 hover:bg-gray-600"
-                : "bg-gray-200 text-indigo-700 hover:bg-gray-300"
+                : "bg-gray-200 text-indigo-600 hover:bg-gray-300"
             }`}
             aria-label={
               darkMode ? "Switch to light mode" : "Switch to dark mode"
@@ -544,23 +568,20 @@ const HomePage = () => {
         </motion.div>
       </nav>
 
-      {/* Hero Section with Conditional Background */}
+      {/* Hero Section */}
       <section
         className={`w-full px-4 sm:px-6 lg:px-12 py-10 sm:py-16 md:py-20 relative ${
-          darkMode ? "bg-gray-900" : "bg-white"
+          darkMode ? "bg-gray-900" : "bg-sky-50"
         }`}
-        style={
-          darkMode
-            ? {
-                backgroundImage: `url(${backgroundImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }
-            : {}
-        }
+        style={{
+          backgroundImage: `url(${
+            darkMode ? backgroundImage : lightBackgroundImage
+          })`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
       >
-        {/* Dark overlay for dark mode to ensure text readability */}
         {darkMode && (
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
         )}
@@ -574,7 +595,11 @@ const HomePage = () => {
             transition={{ duration: 0.6 }}
           >
             <motion.span
-              className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200 mb-4"
+              className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
+                darkMode
+                  ? "bg-indigo-900/50 text-indigo-200"
+                  : "bg-indigo-100 text-indigo-800"
+              } mb-4 shadow-sm`}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -583,19 +608,19 @@ const HomePage = () => {
             </motion.span>
 
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight dark:text-white text-gray-800"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              className={`text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight ${
+                darkMode ? "text-white" : "text-gray-900"
+              }`}
             >
               Evaluate Multiple <br />
               <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-violet-400">
                 Solution Approaches
               </span>
             </motion.h1>
-
             <motion.p
-              className="text-xl dark:text-gray-300 text-gray-600 mb-10"
+              className={`text-xl ${
+                darkMode ? "text-gray-300" : "text-gray-900"
+              } mb-10`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
@@ -617,7 +642,7 @@ const HomePage = () => {
                   boxShadow: "0 10px 25px -5px rgba(79, 70, 229, 0.3)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setShowSignUp(true)} // Changed to open SignUp
+                onClick={() => setShowSignUp(true)}
                 className="px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl hover:shadow-lg transition-all shadow-md hover:shadow-indigo-500/30 flex items-center justify-center gap-2 text-lg font-medium"
               >
                 Get Started <FiArrowRight />
@@ -627,14 +652,24 @@ const HomePage = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setShowSignIn(true)}
-                className="px-8 py-3.5 flex items-center justify-center gap-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition border border-gray-200 dark:border-gray-700 shadow-sm text-lg font-medium"
+                className={`px-8 py-3.5 flex items-center justify-center gap-2 ${
+                  darkMode
+                    ? "bg-gray-800 text-gray-200"
+                    : "bg-white text-gray-800"
+                } rounded-xl ${
+                  darkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"
+                } transition border ${
+                  darkMode ? "border-gray-700" : "border-gray-300"
+                } shadow-sm text-lg font-medium`}
               >
                 <FaGoogle className="text-blue-500" /> Sign in with Google
               </motion.button>
             </motion.div>
 
             <motion.div
-              className="text-sm text-gray-500 dark:text-gray-400"
+              className={`text-sm ${
+                darkMode ? "text-gray-400" : "text-gray-900"
+              }`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
@@ -658,7 +693,7 @@ const HomePage = () => {
       {/* Features Section */}
       <section
         className={`py-20 ${
-          darkMode ? "bg-gray-800/50" : "bg-gray-50"
+          darkMode ? "bg-gray-800/50" : "bg-white"
         } backdrop-blur-sm relative`}
       >
         <div className="w-full px-4 sm:px-6 lg:px-12">
@@ -670,7 +705,11 @@ const HomePage = () => {
             className="text-center mb-16"
           >
             <motion.span
-              className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200 mb-4"
+              className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
+                darkMode
+                  ? "bg-indigo-900/50 text-indigo-200"
+                  : "bg-indigo-100 text-indigo-800"
+              } mb-4 shadow-sm`}
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
@@ -680,7 +719,7 @@ const HomePage = () => {
             </motion.span>
 
             <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-4"
+              className="text-3xl md:text-4xl font-bold mb-4 dark:text-white text-gray-900"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -695,7 +734,7 @@ const HomePage = () => {
 
             <motion.p
               className={`text-lg ${
-                darkMode ? "text-gray-400" : "text-gray-500"
+                darkMode ? "text-gray-400" : "text-gray-900"
               } max-w-2xl mx-auto`}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -717,13 +756,13 @@ const HomePage = () => {
                 viewport={{ once: true }}
                 className={`p-8 rounded-xl transition-all ${
                   darkMode
-                    ? "bg-gray-700/50 hover:bg-gray-700"
-                    : "bg-white hover:bg-gray-100"
-                } hover:shadow-lg cursor-pointer border ${
-                  activeFeature === index
-                    ? "border-indigo-500 dark:border-indigo-400"
-                    : "border-transparent"
-                }`}
+                    ? index % 2 === 0
+                      ? "bg-gray-800/70 hover:bg-gray-800"
+                      : "bg-gray-700/50 hover:bg-gray-700"
+                    : index % 2 === 0
+                    ? "bg-white hover:bg-gray-50 border border-gray-900"
+                    : "bg-sky-50 hover:bg-sky-100 border border-gray-900"
+                } hover:shadow-lg cursor-pointer shadow-sm`}
                 whileHover={{ y: -5 }}
                 onClick={() => setActiveFeature(index)}
                 onMouseEnter={() => setIsHovering(true)}
@@ -734,21 +773,21 @@ const HomePage = () => {
                     className={`p-3 rounded-full mb-4 ${
                       darkMode
                         ? "bg-indigo-900/50 text-indigo-300"
-                        : "bg-indigo-100 text-indigo-600"
-                    }`}
+                        : "bg-indigo-100 text-indigo-800"
+                    } shadow-md`}
                   >
                     {feature.icon}
                   </div>
                   <h3
                     className={`text-xl font-semibold mb-3 ${
-                      darkMode ? "text-white" : "text-gray-800"
+                      darkMode ? "text-white" : "text-gray-900"
                     }`}
                   >
                     {feature.title}
                   </h3>
                   <p
                     className={`${
-                      darkMode ? "text-gray-300" : "text-gray-600"
+                      darkMode ? "text-gray-300" : "text-gray-900"
                     }`}
                   >
                     {feature.description}
@@ -768,9 +807,13 @@ const HomePage = () => {
               transition={{ duration: 0.4 }}
               className={`p-8 rounded-2xl ${
                 darkMode
-                  ? "bg-gray-700/50 border-gray-600"
-                  : "bg-white border-gray-200"
-              } border shadow-lg backdrop-blur-sm`}
+                  ? activeFeature % 2 === 0
+                    ? "bg-gray-800/70 border-gray-700"
+                    : "bg-gray-700/50 border-gray-600"
+                  : activeFeature % 2 === 0
+                  ? "bg-white"
+                  : "bg-sky-50"
+              } shadow-lg backdrop-blur-sm`}
             >
               <div className="flex flex-col lg:flex-row items-center gap-12">
                 {/* Image on the right */}
@@ -779,7 +822,7 @@ const HomePage = () => {
                     className={`w-full h-full p-6 rounded-xl ${
                       darkMode ? "bg-gray-800/50" : "bg-white"
                     } shadow-lg border ${
-                      darkMode ? "border-gray-700" : "border-gray-200"
+                      darkMode ? "border-gray-700" : "border-gray-300"
                     } flex items-center justify-center`}
                   >
                     {activeFeature === 0 && (
@@ -791,14 +834,14 @@ const HomePage = () => {
                         <div className="text-5xl mb-4">📊</div>
                         <h3
                           className={`text-xl font-semibold mb-2 ${
-                            darkMode ? "text-white" : "text-gray-800"
+                            darkMode ? "text-white" : "text-gray-900"
                           }`}
                         >
                           Multiple Methods
                         </h3>
                         <p
                           className={
-                            darkMode ? "text-gray-300" : "text-gray-600"
+                            darkMode ? "text-gray-300" : "text-gray-900"
                           }
                         >
                           Compare recursive, iterative, and DP solutions
@@ -814,14 +857,14 @@ const HomePage = () => {
                         <div className="text-5xl mb-4">📝</div>
                         <h3
                           className={`text-xl font-semibold mb-2 ${
-                            darkMode ? "text-white" : "text-gray-800"
+                            darkMode ? "text-white" : "text-gray-900"
                           }`}
                         >
                           Detailed Rubrics
                         </h3>
                         <p
                           className={
-                            darkMode ? "text-gray-300" : "text-gray-600"
+                            darkMode ? "text-gray-300" : "text-gray-900"
                           }
                         >
                           Custom criteria for each solution type
@@ -837,14 +880,14 @@ const HomePage = () => {
                         <div className="text-5xl mb-4">🔍</div>
                         <h3
                           className={`text-xl font-semibold mb-2 ${
-                            darkMode ? "text-white" : "text-gray-800"
+                            darkMode ? "text-white" : "text-gray-900"
                           }`}
                         >
                           Performance Insights
                         </h3>
                         <p
                           className={
-                            darkMode ? "text-gray-300" : "text-gray-600"
+                            darkMode ? "text-gray-300" : "text-gray-900"
                           }
                         >
                           Identify most effective approaches
@@ -857,7 +900,7 @@ const HomePage = () => {
                 {/* Text content on the left */}
                 <div className="lg:w-1/2 lg:order-1">
                   <motion.h3
-                    className="text-2xl font-bold mb-6 text-indigo-700 dark:text-indigo-300"
+                    className="text-2xl font-bold mb-6 text-indigo-600 dark:text-indigo-300"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
@@ -878,14 +921,14 @@ const HomePage = () => {
                           className={`p-1 rounded-full mr-3 mt-1 ${
                             darkMode
                               ? "bg-indigo-900/50 text-indigo-300"
-                              : "bg-indigo-100 text-indigo-600"
-                          }`}
+                              : "bg-indigo-100 text-indigo-800"
+                          } shadow-sm`}
                         >
                           <FiCheck className="text-sm" />
                         </span>
                         <span
                           className={
-                            darkMode ? "text-gray-300" : "text-gray-700"
+                            darkMode ? "text-gray-300" : "text-gray-900"
                           }
                         >
                           {item}
@@ -903,7 +946,7 @@ const HomePage = () => {
       {/* Testimonial Section */}
       <section
         className={`py-20 ${
-          darkMode ? "bg-gray-900/50" : "bg-indigo-100/50"
+          darkMode ? "bg-gray-900/50" : "bg-sky-50"
         } backdrop-blur-sm relative`}
       >
         <div className="container mx-auto px-6">
@@ -919,7 +962,7 @@ const HomePage = () => {
 
             <motion.blockquote
               className={`text-2xl md:text-3xl font-medium mb-8 ${
-                darkMode ? "text-gray-200" : "text-gray-800"
+                darkMode ? "text-gray-200" : "text-gray-900"
               } leading-relaxed`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -939,20 +982,20 @@ const HomePage = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
             >
-              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 flex items-center justify-center text-white">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md">
                 TJ
               </div>
               <div className="text-left">
                 <p
                   className={`font-semibold ${
-                    darkMode ? "text-white" : "text-gray-800"
+                    darkMode ? "text-white" : "text-gray-900"
                   }`}
                 >
                   Tarun T
                 </p>
                 <p
                   className={`text-sm ${
-                    darkMode ? "text-gray-400" : "text-gray-600"
+                    darkMode ? "text-gray-400" : "text-gray-900"
                   }`}
                 >
                   Computer Science Department
@@ -978,18 +1021,16 @@ const HomePage = () => {
             className="max-w-2xl mx-auto"
           >
             <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-6"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
+              className={`text-3xl md:text-4xl font-bold mb-6 ${
+                darkMode ? "text-white" : "text-gray-900"
+              }`}
             >
               Ready to Transform Your Evaluations?
             </motion.h2>
 
             <motion.p
               className={`text-xl ${
-                darkMode ? "text-gray-300" : "text-gray-600"
+                darkMode ? "text-gray-300" : "text-gray-900"
               } mb-10`}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -1013,18 +1054,18 @@ const HomePage = () => {
                   boxShadow: "0 10px 25px -5px rgba(79, 70, 229, 0.3)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setShowSignUp(true)} // Changed to open SignUp
+                onClick={() => setShowSignUp(true)}
                 className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl hover:shadow-lg transition-all shadow-md hover:shadow-indigo-500/30 text-lg font-medium"
               >
                 Start Free Trial
               </motion.button>
 
               <motion.button
-                whileHover={{ scale: 1.03 }}
+                whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 className={`px-8 py-4 border-2 border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400 rounded-xl ${
-                  darkMode ? "hover:bg-gray-800" : "hover:bg-indigo-50"
-                } transition text-lg font-medium`}
+                  darkMode ? "hover:bg-gray-800" : "hover:bg-gray-50"
+                } transition text-lg font-medium shadow-sm`}
               >
                 Schedule Demo
               </motion.button>
@@ -1036,7 +1077,7 @@ const HomePage = () => {
       {/* Footer */}
       <footer
         className={`py-12 ${
-          darkMode ? "bg-gray-900/80" : "bg-gray-50"
+          darkMode ? "bg-gray-900/80" : "bg-sky-50"
         } backdrop-blur-sm border-t ${
           darkMode ? "border-gray-800" : "border-gray-200"
         } relative`}
@@ -1069,8 +1110,8 @@ const HomePage = () => {
                   className={`${
                     darkMode
                       ? "text-gray-400 hover:text-indigo-400"
-                      : "text-gray-600 hover:text-indigo-600"
-                  } transition`}
+                      : "text-gray-900 hover:text-indigo-800"
+                  } transition font-medium`}
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -1086,7 +1127,7 @@ const HomePage = () => {
             className={`border-t ${
               darkMode ? "border-gray-800" : "border-gray-200"
             } mt-8 pt-8 text-center ${
-              darkMode ? "text-gray-400" : "text-gray-500"
+              darkMode ? "text-gray-400" : "text-gray-900"
             }`}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

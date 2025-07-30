@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Layout from "./layout";
+import Layout from "../dashboard/layout";
 
 const MyQuestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -69,16 +74,16 @@ const MyQuestions = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
-        delayChildren: 0.3
-      }
-    }
+        delayChildren: 0.3,
+      },
+    },
   };
 
   const cardVariants = {
-    hidden: { 
+    hidden: {
       y: 50,
       opacity: 0,
-      rotateX: -15
+      rotateX: -15,
     },
     visible: {
       y: 0,
@@ -87,21 +92,22 @@ const MyQuestions = () => {
       transition: {
         type: "spring",
         damping: 15,
-        stiffness: 100
-      }
+        stiffness: 100,
+      },
     },
     hover: {
       y: -10,
       scale: 1.02,
-      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      boxShadow:
+        "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
       transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
+        ease: "easeOut",
+      },
     },
     tap: {
-      scale: 0.98
-    }
+      scale: 0.98,
+    },
   };
 
   const optionVariants = {
@@ -112,13 +118,13 @@ const MyQuestions = () => {
       transition: {
         delay: i * 0.1,
         duration: 0.5,
-        ease: "backOut"
-      }
+        ease: "backOut",
+      },
     }),
     hover: {
       x: 5,
-      backgroundColor: "rgba(79, 70, 229, 0.3)"
-    }
+      backgroundColor: "rgba(79, 70, 229, 0.3)",
+    },
   };
 
   return (
@@ -130,17 +136,17 @@ const MyQuestions = () => {
         className="relative z-10"
       >
         {/* Animated background elements */}
-        <motion.div 
+        <motion.div
           style={{ opacity: backgroundOpacity }}
           className="fixed inset-0 overflow-hidden"
         >
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              initial={{ 
+              initial={{
                 x: Math.random() * 100 - 50,
                 y: Math.random() * 100 - 50,
-                rotate: Math.random() * 360
+                rotate: Math.random() * 360,
               }}
               animate={{
                 x: [null, Math.random() * 100 - 50],
@@ -149,8 +155,8 @@ const MyQuestions = () => {
                 transition: {
                   duration: 20 + Math.random() * 20,
                   repeat: Infinity,
-                  repeatType: "reverse"
-                }
+                  repeatType: "reverse",
+                },
               }}
               className="absolute rounded-full bg-indigo-200/50 dark:bg-indigo-900/20"
               style={{
@@ -163,43 +169,54 @@ const MyQuestions = () => {
           ))}
         </motion.div>
 
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="relative z-10"
         >
           {/* Page Header */}
-          <motion.div 
+          <motion.div
             variants={cardVariants}
             className="flex items-center mb-8 p-6 rounded-2xl backdrop-blur-sm bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700"
           >
-            <motion.div 
-              animate={{ 
+            <motion.div
+              animate={{
                 rotate: 360,
                 transition: {
                   duration: 15,
                   repeat: Infinity,
-                  ease: "linear"
-                }
+                  ease: "linear",
+                },
               }}
               className="mr-4"
             >
               <div className="p-3 rounded-full bg-purple-100 dark:bg-purple-900 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-purple-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
                 </svg>
               </div>
             </motion.div>
             <motion.h1
               animate={{
-                backgroundPosition: ['0% 50%', '100% 50%'],
+                backgroundPosition: ["0% 50%", "100% 50%"],
                 transition: {
                   duration: 8,
                   repeat: Infinity,
                   repeatType: "reverse",
-                  ease: "linear"
-                }
+                  ease: "linear",
+                },
               }}
               className="text-3xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent bg-[length:300%_100%]"
             >
@@ -222,14 +239,30 @@ const MyQuestions = () => {
                   transition: {
                     duration: 1.5,
                     repeat: Infinity,
-                    ease: "easeInOut"
-                  }
+                    ease: "easeInOut",
+                  },
                 }}
                 className="mb-4"
               >
-                <svg className="h-16 w-16 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="h-16 w-16 text-indigo-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
               </motion.div>
               <motion.p
@@ -237,8 +270,8 @@ const MyQuestions = () => {
                   opacity: [0.6, 1, 0.6],
                   transition: {
                     duration: 2,
-                    repeat: Infinity
-                  }
+                    repeat: Infinity,
+                  },
                 }}
                 className="text-lg text-gray-600 dark:text-gray-300"
               >
@@ -259,8 +292,8 @@ const MyQuestions = () => {
                   transition: {
                     duration: 4,
                     repeat: Infinity,
-                    ease: "easeInOut"
-                  }
+                    ease: "easeInOut",
+                  },
                 }}
               >
                 <svg
@@ -280,13 +313,13 @@ const MyQuestions = () => {
               </motion.div>
               <motion.h2
                 animate={{
-                  backgroundPosition: ['0% 50%', '100% 50%'],
+                  backgroundPosition: ["0% 50%", "100% 50%"],
                   transition: {
                     duration: 6,
                     repeat: Infinity,
                     repeatType: "reverse",
-                    ease: "linear"
-                  }
+                    ease: "linear",
+                  },
                 }}
                 className="mt-6 text-2xl font-bold bg-gradient-to-r from-gray-600 to-gray-800 dark:from-gray-300 dark:to-gray-500 bg-clip-text text-transparent bg-[length:300%_100%]"
               >
@@ -297,17 +330,18 @@ const MyQuestions = () => {
                   opacity: [0.7, 1, 0.7],
                   transition: {
                     duration: 3,
-                    repeat: Infinity
-                  }
+                    repeat: Infinity,
+                  },
                 }}
                 className="mt-2 text-gray-500 dark:text-gray-400"
               >
                 You haven't created any questions yet
               </motion.p>
               <motion.button
-                whileHover={{ 
+                whileHover={{
                   y: -3,
-                  boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+                  boxShadow:
+                    "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
                 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate("/addq")}
@@ -333,17 +367,18 @@ const MyQuestions = () => {
                     className="rounded-2xl overflow-hidden transition-all duration-300 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-lg"
                     style={{
                       transformOrigin: "center top",
-                      perspective: "1000px"
+                      perspective: "1000px",
                     }}
                   >
                     <div className="p-6">
                       {/* Question Header */}
                       <div className="flex items-start justify-between">
-                        <motion.h3 
+                        <motion.h3
                           animate={{
-                            color: hoveredCard === index 
-                              ? "#6366f1"
-                              : "var(--text-primary)"
+                            color:
+                              hoveredCard === index
+                                ? "#6366f1"
+                                : "var(--text-primary)",
                           }}
                           className="text-xl font-bold dark:text-white"
                         >
@@ -352,9 +387,10 @@ const MyQuestions = () => {
                         <motion.div
                           animate={{
                             scale: hoveredCard === index ? 1.1 : 1,
-                            backgroundColor: hoveredCard === index
-                              ? "rgba(199, 210, 254, 0.5)"
-                              : "rgba(249, 250, 251, 0.7)"
+                            backgroundColor:
+                              hoveredCard === index
+                                ? "rgba(199, 210, 254, 0.5)"
+                                : "rgba(249, 250, 251, 0.7)",
                           }}
                           className="px-3 py-1 rounded-full text-xs font-medium shadow-sm dark:bg-gray-700"
                         >
@@ -363,7 +399,7 @@ const MyQuestions = () => {
                       </div>
 
                       {/* Meta Information */}
-                      <motion.div 
+                      <motion.div
                         className="flex flex-wrap gap-4 mt-3"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -374,17 +410,22 @@ const MyQuestions = () => {
                             whileHover={{ scale: 1.05 }}
                             className="flex items-center"
                           >
-                            <motion.svg 
+                            <motion.svg
                               animate={{
-                                rotate: hoveredCard === index ? 15 : 0
+                                rotate: hoveredCard === index ? 15 : 0,
                               }}
-                              xmlns="http://www.w3.org/2000/svg" 
-                              className="h-4 w-4 mr-1 text-indigo-500 dark:text-indigo-300" 
-                              fill="none" 
-                              viewBox="0 0 24 24" 
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 mr-1 text-indigo-500 dark:text-indigo-300"
+                              fill="none"
+                              viewBox="0 0 24 24"
                               stroke="currentColor"
                             >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                              />
                             </motion.svg>
                             <span className="text-sm text-gray-600 dark:text-gray-300">
                               {q.subject.name}
@@ -396,17 +437,22 @@ const MyQuestions = () => {
                             whileHover={{ scale: 1.05 }}
                             className="flex items-center"
                           >
-                            <motion.svg 
+                            <motion.svg
                               animate={{
-                                rotate: hoveredCard === index ? -15 : 0
+                                rotate: hoveredCard === index ? -15 : 0,
                               }}
-                              xmlns="http://www.w3.org/2000/svg" 
-                              className="h-4 w-4 mr-1 text-indigo-500 dark:text-indigo-300" 
-                              fill="none" 
-                              viewBox="0 0 24 24" 
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 mr-1 text-indigo-500 dark:text-indigo-300"
+                              fill="none"
+                              viewBox="0 0 24 24"
                               stroke="currentColor"
                             >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                              />
                             </motion.svg>
                             <span className="text-sm text-gray-600 dark:text-gray-300">
                               {q.department.name}
@@ -417,9 +463,7 @@ const MyQuestions = () => {
 
                       {/* Options List */}
                       {q.options?.length > 0 && (
-                        <motion.ul 
-                          className="mt-4 space-y-2"
-                        >
+                        <motion.ul className="mt-4 space-y-2">
                           {q.options.map((opt, i) => (
                             <motion.li
                               key={i}
@@ -445,7 +489,7 @@ const MyQuestions = () => {
                       )}
 
                       {/* Action Buttons */}
-                      <motion.div 
+                      <motion.div
                         className="flex justify-end gap-3 mt-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -485,17 +529,28 @@ const MyQuestions = () => {
         className="fixed bottom-6 right-6 z-50"
       >
         <motion.button
-          whileHover={{ 
+          whileHover={{
             scale: 1.1,
             rotate: 10,
-            boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.4)"
+            boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.4)",
           }}
           whileTap={{ scale: 0.9 }}
           onClick={() => navigate("/addq")}
           className="p-4 rounded-full shadow-xl bg-indigo-500 hover:bg-indigo-600 text-white"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
           </svg>
         </motion.button>
       </motion.div>
@@ -508,7 +563,7 @@ const MyQuestions = () => {
             initial={{
               x: Math.random() * 100,
               y: Math.random() * 100,
-              opacity: 0
+              opacity: 0,
             }}
             animate={{
               x: [null, Math.random() * 100],
@@ -517,8 +572,8 @@ const MyQuestions = () => {
               transition: {
                 duration: 10 + Math.random() * 20,
                 repeat: Infinity,
-                repeatType: "reverse"
-              }
+                repeatType: "reverse",
+              },
             }}
             className="absolute rounded-full bg-indigo-400/20 dark:bg-indigo-500/20"
             style={{

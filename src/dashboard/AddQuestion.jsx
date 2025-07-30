@@ -37,16 +37,8 @@ const AddQuestion = () => {
       const question = location.state.questionToUpdate;
       setTitle(question.title);
       setType(question.type);
-      setSubjectId(
-        question.subjectId !== null && question.subjectId !== undefined
-          ? question.subjectId.toString()
-          : ""
-      );
-      setDepartmentId(
-        question.departmentId !== null && question.departmentId !== undefined
-          ? question.departmentId.toString()
-          : ""
-      );
+      setSubjectId(question.subjectId?.toString() || "");
+      setDepartmentId(question.departmentId?.toString() || "");
       setOptions(question.options || [{ text: "", marks: 0 }]);
       setQuestionId(question.id);
       setIsEditing(true);
@@ -129,8 +121,8 @@ const AddQuestion = () => {
     const payload = {
       title,
       type,
-      subjectId: parseInt(subjectId),
-      departmentId: parseInt(departmentId),
+      subjectId: subjectId ? parseInt(subjectId) : null,
+      departmentId: departmentId ? parseInt(departmentId) : null,
       options: options.filter((opt) => opt.text.trim() !== ""),
     };
 
@@ -401,7 +393,7 @@ const AddQuestion = () => {
                   >
                     <option value="">Select Department</option>
                     {departments.map((d) => (
-                      <option key={d.id} value={d.id.toString()}>
+                      <option key={d.id} value={d.id}>
                         {d.name}
                       </option>
                     ))}
@@ -422,7 +414,7 @@ const AddQuestion = () => {
                   >
                     <option value="">Select Subject</option>
                     {subjects.map((s) => (
-                      <option key={s.id} value={s.id.toString()}>
+                      <option key={s.id} value={s.id}>
                         {s.name}
                       </option>
                     ))}
@@ -939,7 +931,7 @@ const AddQuestion = () => {
                     >
                       <option value="">Select Department</option>
                       {departments.map((d) => (
-                        <option key={d.id} value={d.id.toString()}>
+                        <option key={d.id} value={d.id}>
                           {d.name}
                         </option>
                       ))}

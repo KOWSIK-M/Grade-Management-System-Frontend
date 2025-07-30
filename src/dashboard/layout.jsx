@@ -10,6 +10,7 @@ import {
   FiMenu,
   FiX,
   FiFileText,
+  FiDatabase,
 } from "react-icons/fi";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { RiDashboardFill } from "react-icons/ri";
@@ -21,19 +22,6 @@ const Layout = ({ children }) => {
   const [isHoveringSidebar, setIsHoveringSidebar] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const handleLogout = async () => {
-    try {
-      await fetch("http://localhost:2025/api/auth/logout", {
-        method: "POST",
-        credentials: "include", // ✅ Very important to send cookies
-      });
-    } catch (err) {
-      console.error("Logout error:", err);
-    } finally {
-      navigate("/"); // ✅ Redirect after logout
-    }
-  };
 
   const toggleDarkMode = () => {
     const newMode = !darkMode;
@@ -205,7 +193,7 @@ const Layout = ({ children }) => {
               ></span>
             </motion.button>
 
-            {/* View Questions Button */}
+            {/* All Questions Button */}
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -222,14 +210,16 @@ const Layout = ({ children }) => {
                   : "text-gray-700 hover:bg-gray-100"
               }`}
             >
-              <FiList className={`${sidebarCollapsed ? "text-xl" : "mr-3"}`} />
+              <FiDatabase
+                className={`${sidebarCollapsed ? "text-xl" : "mr-3"}`}
+              />
               {!sidebarCollapsed && (
                 <motion.span
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  View All Questions
+                  All Questions
                 </motion.span>
               )}
               <span
@@ -249,7 +239,7 @@ const Layout = ({ children }) => {
           }`}
         >
           <button
-            onClick={handleLogout}
+            onClick={() => navigate("/")}
             className={`w-full flex items-center ${
               sidebarCollapsed ? "justify-center px-0 py-4" : "px-4 py-3"
             } rounded-lg transition-all ${
